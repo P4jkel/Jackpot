@@ -129,6 +129,70 @@
 <body>
   <div id="confetti"></div>
 
+  <div id="welcome" style="
+    position:fixed; inset:0; z-index:998;
+    display:flex; align-items:center; justify-content:center;
+    background: radial-gradient(circle at top, rgba(30,30,30,0.92), rgba(0,0,0,0.98));
+    color:#fff; text-align:left; padding:24px;">
+    <div style="
+      max-width:620px; width:92vw;
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.14);
+      border-radius:18px; padding:22px;
+      box-shadow:0 18px 60px rgba(0,0,0,0.55);">
+
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+        <div style="font-size:1.5rem; font-weight:1000;">MICHUUUUUUU! HOT 32!🎂</div>
+        <div style="opacity:.8;">Urodzinowa edycja specjalna</div>
+      </div>
+
+      <div style="font-size:1.15rem; line-height:1.4; opacity:.95;">
+        Normalnie wręczyłbym Ci prezent jak człowiek… ale to byłoby <b>za łatwe</b>. 😄
+        <br/><br/>
+        Skoro lubisz <b>ryzyko</b> i klimat kasyna, to zrobiłem dla Ciebie mini grę:
+        <b>Maszynę Losującą</b> 🎰
+        <br/><br/>
+        Sprawdź swoje szczęście i wygraj swój prezent! 🎁 ...Albo i nie 😈
+      </div>
+
+      <div style="
+        margin-top:14px; padding:14px; border-radius:14px;
+        background:rgba(0,0,0,0.25);
+        border:1px solid rgba(255,255,255,0.12);">
+        <div style="font-weight:900; margin-bottom:8px;">Zasady:</div>
+        <ul style="margin:0; padding-left:18px; line-height:1.5; opacity:.92;">
+          <li>Masz <b>3 darmowe spiny</b>.</li>
+          <li>Jeśli trafisz <b>JACKPOT</b> — wygrywasz prezent 🎁</li>
+          <li>Jeśli nie… cóż… trudno 😂</li>
+        </ul>
+        <div style="margin-top:10px; opacity:.85; font-size:.95rem;">
+          Nie ma na co czekać. Bierz się do pracy! 😄
+        </div>
+      </div>
+
+      <button id="startBtn" style="
+        width:100%; margin-top:14px;
+        padding:14px 16px; border-radius:14px; border:none;
+        font-size:1.05rem; font-weight:1000; cursor:pointer;
+        background:linear-gradient(90deg,#ffcc00,#ff5a00); color:#111;">
+        START 🎰
+      </button>
+
+      <button id="skipBtn" style="
+        width:100%; margin-top:10px;
+        padding:12px 16px; border-radius:14px;
+        background:rgba(255,255,255,0.10); color:#fff;
+        border:1px solid rgba(255,255,255,0.18);
+        font-weight:800; cursor:pointer;">
+        Widok w oknie
+      </button>
+
+      <div style="opacity:.6; margin-top:12px; font-size:.9rem;">
+        Tip: włącz dźwięk 🔊 (dla pełnego klimatu)
+      </div>
+    </div>
+  </div>
+  
   <div class="card" id="card">
     <h1>Urodzinowa Maszyna Losująca 🎰</h1>
     <div class="subtitle">Kliknij i “wylosuj” prezent!</div>
@@ -276,6 +340,7 @@
       claimBtn.style.display = "none";
       setJackpotUI(false);
       
+      
       // zwiększ licznik spinów
       spinCount++;
       const spinsLeft = Math.max(0, FREE_SPINS - spinCount);
@@ -368,6 +433,35 @@
 
     // Bonus: lekkie “przebudzenie” audio po pierwszym dotknięciu (na mobile)
     window.addEventListener("pointerdown", ensureAudio, { once: true });
+
+    // ====== WELCOME SCREEN ======
+    const welcome = document.getElementById("welcome");
+    const startBtn = document.getElementById("startBtn");
+    const skipBtn = document.getElementById("skipBtn");
+
+    function closeWelcome() {
+      welcome.style.display = "none";
+    }
+
+    startBtn.addEventListener("click", async () => {
+      // odblokuj audio na telefonie
+    ensureAudio();
+    clickSound();
+
+    // opcjonalnie fullscreen (moze dzialac / nie dzialac zaleznie od telefonu)
+    try {
+      if (document.documentElement.requestFullscreen){
+        await document.documentElement.requestFullscreen();
+      }
+    } catch(e) {}
+
+    closeWelcome();
+  });
+  skipBtn.addEventListener("click", () => {
+    ensureAudio();
+    clickSound();
+    closeWelcome();
+  });
   </script>
 </body>
 </html>
