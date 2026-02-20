@@ -150,6 +150,12 @@
     const PRIZE_VALUE = "100 zł"; // <- zmień wartość jeśli chcesz
     const FINAL_SYMBOL = "🎁";
 
+    // ====== DARMOWE SPINY ======
+    const FREE_SPINS = 3;
+    let spinCount = 0; // ile razy juz zakrecil
+
+    // jakie symbole mają "zepsuć" ostatnie okienko w 1. i 2. spinie
+    const LOSE_SYMBOLS = ["💩"]; // możesz zmienić na co chcesz
     // Symbole do kręcenia
     const symbols = ["🍒","🍋","🔔","🍀","💎","7️⃣","⭐","🎁","🎉"];
 
@@ -269,6 +275,10 @@
       btn.disabled = true;
       claimBtn.style.display = "none";
       setJackpotUI(false);
+      
+      // zwiększ licznik spinów
+      spinCount++;
+      const spinsLeft = Math.max(0, FREE_SPINS - spinCount);
 
       result.textContent = "Kręcę… 🎰";
       // Start: wszystkie kręcą krótko
@@ -278,6 +288,40 @@
         spinWindow(w3, 10, 35, 70)
       ]);
       await baseSpin;
+
+      // --- 1 i 2 spin: PRZEGRANA ---
+      if (spinCount < FREE_SPINS) {
+        // Prawie wygrana: dwa zatrzymują się na prezencie, trzeci kręci dłużej
+        w1.textContent = FINAL_SYMBOL;
+        const spin2 = spinWindow(w2, 12, 40, 100, true);
+        const spin3 = spinWindow(w3, 18, 45, 120, true);
+
+        await spin2;
+        w2.textContent = FINAL_SYMBOL;
+        
+        result.innerHTML = `Ooo! PRAWIE… 😈<br/>Dwa już siadły na <b>${FINAL_SYMBOL}</b>…`;
+        await spin3;
+
+        // zamiast JACKPOT: ostatnie okienko pokazuje "zły" symbol
+        const loseSymbol = LOSE_SYMBOLS[(spinCount - 1) % LOSE_SYMBOLS.length];
+        w3.textContent = loseSymbol;
+
+        // krótki "smutny" dźwięk
+        beep(140, 0.10, "sine", 0.02);
+        await sleep(120);
+        beep(110, 0.14, "sine", 0.018);
+
+        result.innerHTML = `
+        <b>O NIE 😭</b><br/>
+        Ale pech! Ale pech! Co za niefart... ${loseSymbol}<br/>
+        <span style="opacity:.85">Darmowe spiny pozostały: <b>${spinsLeft}</b> 😈</span>
+        `;
+
+        btn.disabled = false;
+        return; // bardzo ważne: nie lecimy dalej do jackpota
+      }
+
+
 
       // 😈 Prawie wygrana: dwa zatrzymują się na prezencie, trzeci kręci dłużej
       w1.textContent = FINAL_SYMBOL;
