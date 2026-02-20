@@ -131,7 +131,7 @@
 
   <div class="card" id="card">
     <h1>Urodzinowa Maszyna Losująca 🎰</h1>
-    <div class="subtitle">Kliknij i “wylosuj” prezent!)</div>
+    <div class="subtitle">Kliknij i “wylosuj” prezent!</div>
 
     <div class="slot">
       <div class="window" id="w1">🎁</div>
@@ -281,11 +281,14 @@
 
       // 😈 Prawie wygrana: dwa zatrzymują się na prezencie, trzeci kręci dłużej
       w1.textContent = FINAL_SYMBOL;
+      const spin2 = spinWindow(w2, 12, 40, 100, true);
+      const spin3 = spinWindow(w3, 22, 45, 120, true);
+
+      await spin2;
       w2.textContent = FINAL_SYMBOL;
       result.innerHTML = `Ooo! PRAWIE… 😈<br/>Dwa już siadły na <b>${FINAL_SYMBOL}</b>…`;
+      await spin3;
 
-      // Trzeci kręci dłużej, zwalniając
-      await spinWindow(w3, 22, 45, 120, true);
 
       // Mały “zawis” na czymś innym (daje napięcie)
       w3.textContent = "💎";
@@ -301,10 +304,10 @@
       fanfare();
 
       result.innerHTML = `
-        <b>JACKPOT! 🥳</b><br/>
+        <b>JACKPOT!🥳 GIGA BIG WIN!!!1!💰</b><br/>
         WYGRAŁEŚ VOUCHER O WARTOŚCI:<br/>
         <span class="prize">${PRIZE_VALUE}</span><br/>
-        <span style="opacity:.85">Kod vouchera odbierzesz osobiście 😄</span>
+        <span style="opacity:.85">To co teraz?🤭 Na czerwone?🔴</span>
       `;
 
       claimBtn.style.display = "block";
@@ -314,7 +317,7 @@
     claimBtn.addEventListener("click", () => {
       ensureAudio();
       clickSound();
-      alert("Zgłoś się do mnie po kod vouchera 😄");
+      alert("Zgłoś się do mnie po wygraną😄");
     });
 
     btn.addEventListener("click", spin);
