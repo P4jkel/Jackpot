@@ -221,7 +221,7 @@
     // jakie symbole mają "zepsuć" ostatnie okienko w 1. i 2. spinie
     const LOSE_SYMBOLS = ["💩"]; // możesz zmienić na co chcesz
     // Symbole do kręcenia
-    const symbols = ["🍒","🍋","🔔","🍀","💎","7️⃣","⭐","🎁","🎉"];
+    const symbols = ["🍒","🍋","🔔","🍀","💩","💎","⭐","🎁","🎉"];
 
     // ====== ELEMENTY ======
     const w1 = document.getElementById("w1");
@@ -400,7 +400,7 @@
 
 
       // Mały “zawis” na czymś innym (daje napięcie)
-      w3.textContent = "💎";
+      w3.textContent = "💩";
       beep(180, 0.08, "sine", 0.02);
       await sleep(380);
 
@@ -426,7 +426,7 @@
     claimBtn.addEventListener("click", () => {
       ensureAudio();
       clickSound();
-      alert("Zgłoś się do mnie po wygraną😄");
+      alert("Nagroda zostanie przesłana na twój adres email😄");
     });
 
     btn.addEventListener("click", spin);
